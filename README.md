@@ -7,13 +7,13 @@
 ![Stack](https://img.shields.io/badge/stack-JS%20%7C%20Python%20%7C%20Stockfish-informational?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
----
+
 
 ## 🎯 Aperçu
 
 **ChessEater** est une plateforme d'analyse haute performance conçue pour les joueurs qui veulent progresser sérieusement. Importez vos parties depuis **Lichess** ou **Chess.com**, naviguez coup par coup et laissez Stockfish + Mistral vous expliquer exactement où vous avez perdu la partie — et pourquoi.
 
----
+
 
 ## ✨ Fonctionnalités
 
@@ -55,7 +55,6 @@ Backend      →  Python + FastAPI + httpx
 Paquets      →  pnpm
 ```
 
----
 
 ## 📦 Installation
 
@@ -143,8 +142,6 @@ venv/
 __pycache__/
 ```
 
----
-
 ## 🤝 Contribution
 
 Les contributions sont les bienvenues.  
@@ -156,13 +153,10 @@ Pour tout changement majeur, ouvrez d'abord une **issue** pour en discuter.
 4. Pushez (`git push origin feature/ma-feature`)
 5. Ouvrez une **Pull Request**
 
----
-
 ## 📄 Licence
 
 Distribué sous licence **MIT**. Voir `LICENSE` pour plus d'informations.
 
----
 
 <p align="center">
   Fait avec ♟️ et beaucoup de évidemment café lol
