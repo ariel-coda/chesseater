@@ -1,0 +1,43 @@
+# --- SÉCURITÉ (CRITIQUE) ---
+.env
+*.env
+.env.local
+.env.*.local
+
+# --- ENVIRONNEMENT VIRTUEL (PYTHON) ---
+venv/
+.venv/
+env/
+ENV/
+Scripts/
+bin/
+lib/
+include/
+pyvenv.cfg
+*.pyc
+__pycache__/
+
+# --- DEPENDANCES JAVASCRIPT ---
+node_modules/
+.pnpm-debug.log*
+pnpm-lock.yaml
+
+# --- LOGS ET TEMPORAIRE ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# --- DOSSIERS DE BUILD ---
+dist/
+build/
+.next/
+out/
+
+# --- CONFIGURATION IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
