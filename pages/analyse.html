@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="fr" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChessEater — Analyse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "ce-green": "#81b64c",
+            "ce-green-dark": "#6a9a3a",
+            "ce-green-dim": "#4a6e28",
+            "ce-green-muted": "#1e3310",
+            "ce-900": "#1a1a1a",
+            "ce-800": "#242424",
+            "ce-750": "#2a2a2a",
+            "ce-700": "#302f2f",
+            "ce-600": "#3d3c3c",
+            "ce-500": "#555555",
+            "ce-400": "#7a7a7a",
+            "ce-300": "#a0a0a0",
+            "ce-200": "#c8c8c8",
+            "ce-100": "#e8e8e8",
+          },
+          fontFamily: {
+            display: ['"DM Sans"', "sans-serif"],
+            mono: ['"JetBrains Mono"', "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- ══════════════════ chessground CDNs ══════════════════ -->
+
+  <link rel="stylesheet" href="https://unpkg.com/chessground/assets/chessground.base.css">
+  <link rel="stylesheet" href="https://unpkg.com/chessground/assets/chessground.brown.css">
+  <link rel="stylesheet" href="https://unpkg.com/chessground/assets/chessground.cburnett.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="../style/analyse.css" />
+</head>
+
+<body class="bg-ce-900 text-ce-100 h-screen flex overflow-hidden select-none">
+  <!-- ══════════════════ SIDEBAR ══════════════════ -->
+  <aside class="w-52 flex-shrink-0 bg-ce-800 border-r border-ce-700 flex flex-col">
+    <div class="px-4 py-5 border-b border-ce-700">
+      <div class="flex items-center gap-2.5">
+        <div>
+          <div class="font-semibold text-ce-100 italic tracking-wide leading-none">
+            ChessEater
+          </div>
+          <div class="text-ce-400 text-xs mt-0.5">Analyseur de parties</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="flex-1 py-3 px-2 flex flex-col gap-0.5">
+      <a href="../index.html"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400">
+        <i data-lucide="home" class="nav-icon w-4 h-4"></i>Accueil
+      </a>
+      <a href="#"
+        class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-200">
+        <i data-lucide="bar-chart-2" class="nav-icon w-4 h-4 text-ce-400"></i>Analyse
+      </a>
+      <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
+        <i data-lucide="swords" class="nav-icon w-4 h-4"></i>Rejouer vs IA
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
+        <i data-lucide="trending-up" class="nav-icon w-4 h-4"></i>Progression
+      </a-->
+      <a href="#"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
+        <i data-lucide="settings" class="nav-icon w-4 h-4"></i>Paramètres
+      </a>
+    </nav>
+    <div class="p-3 border-t border-ce-700">
+      <!-- Info partie -->
+      <div class="bg-ce-750 rounded-md p-3 border border-ce-700">
+        <div class="text-ce-300 text-xs font-semibold mb-1">
+          Partie en cours d'analyse
+        </div>
+        <div id="gameOpponent" class="text-ce-100 text-sm font-medium">vs. joueur 1</div>
+        <div id="gameInfo" class="text-ce-400 text-xs mt-0.5">
+          Blitz 5+0 · 34 coups · Défaite
+        </div>
+        <a href="index.html" class="mt-2 flex items-center gap-1.5 text-ce-green text-xs font-medium hover:underline">
+          <i data-lucide="arrow-left" class="w-3 h-3"></i>
+          Changer de partie
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════ MAIN ══════════════════ -->
+  <main class="flex-1 flex overflow-hidden">
+    <!-- ── ZONE ÉCHIQUIER (gauche) ── -->
+    <div class="flex flex-col flex-1 min-w-0 overflow-hidden border-r border-ce-700">
+      <!-- Header analyse -->
+      <div class="bg-ce-800 border-b border-ce-700 px-5 py-3 flex items-center gap-3">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-ce-green"></div>
+          <span class="text-sm font-semibold text-ce-100">Mode Analyse</span>
+        </div>
+        <div class="ml-auto flex items-center gap-2">
+          <!-- Chips résumé -->
+          <span class="chip" style="
+                background: #00b8d910;
+                border-color: #00b8d9;
+                color: #00b8d9;
+              ">_ Brilliant</span>
+          <span class="chip" style="
+                background: #81b64c10;
+                border-color: #81b64c;
+                color: #81b64c;
+              ">_ Meilleur</span>
+          <span class="chip" style="
+                background: #c8b84c10;
+                border-color: #c8b84c;
+                color: #c8b84c;
+              ">_ Imprécis</span>
+          <span class="chip" style="
+                background: #d0823c10;
+                border-color: #d0823c;
+                color: #d0823c;
+              ">_ Erreurs</span>
+          <span class="chip" style="
+                background: #e0525210;
+                border-color: #e05252;
+                color: #e05252;
+              ">_ Gaffes</span>
+        </div>
+      </div>
+
+      <!-- Board area -->
+      <div class="flex-1 flex items-center justify-center p-4 gap-3">
+        <!-- Barre d'équilibre verticale -->
+        <div class="flex flex-col items-center gap-1.5 h-full max-h-[520px]">
+          <span class="eval-label text-ce-200">B</span>
+          <div class="eval-bar-track flex-1 w-3.5">
+            <div class="eval-bar-white" id="evalBarWhite" style="height: 55%"></div>
+          </div>
+          <span class="eval-label text-ce-500">N</span>
+          <div class="text-center mt-1">
+            <span id="evalScore" class="text-xs font-mono font-bold text-ce-green">+0.8</span>
+          </div>
+        </div>
+
+        <!-- Échiquier + joueurs -->
+        <div class="flex-col justify-center gap-2" style="max-height: 560px">
+          <!-- Joueur noir (en haut) -->
+          <div class="player-strip">
+            <div class="player-avatar" style="background: #3a1e1e; color: #e05252">
+              MJ
+            </div>
+            <div>
+              <span id="playerBlackName" class="text-sm font-semibold text-ce-100">Magnus_jr</span>
+              <span id="playerBlackElo" class="text-ce-400 text-xs ml-2">1587 Elo</span>
+            </div>
+            <div class="player-clock text-ce-300">3:24</div>
+          </div>
+
+          <!-- Échiquier -->
+          <div id="board" style="width: 500px; height: 500px"></div>
+
+          <!-- Joueur blanc (en bas) -->
+          <div class="player-strip">
+            <div class="player-avatar" style="background: #1e3310; color: #81b64c">
+              JD
+            </div>
+            <div>
+              <span id="playerWhiteName" class="text-sm font-semibold text-ce-100">jean_d</span>
+              <span id="playerWhiteElo" class="text-ce-400 text-xs ml-2">1540 Elo</span>
+            </div>
+            <div class="player-clock text-ce-green" style="border-color: #4a6e28">
+              4:12
+            </div>
+          </div>
+
+          <!-- Contrôles de navigation -->
+          <div class="flex items-center justify-center gap-2 mt-1">
+            <button class="ctrl" id="btnFirst">
+              <i data-lucide="chevrons-left" class="w-3.5 h-3.5"></i>
+            </button>
+            <button class="ctrl" id="btnPrev">
+              <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+            </button>
+            <div
+              class="bg-ce-750 border border-ce-700 rounded-md px-4 py-1.5 font-mono text-xs text-ce-300 min-w-[90px] text-center"
+              id="moveLabel">
+              Coup 0 / 0
+            </div>
+            <button class="ctrl" id="btnNext">
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+            <button class="ctrl" id="btnLast">
+              <i data-lucide="chevrons-right" class="w-3.5 h-3.5"></i>
+            </button>
+            <div class="w-px h-5 bg-ce-700 mx-1"></div>
+            <button class="ctrl" title="Retourner l'échiquier" id="btnFlip">
+              <i data-lucide="flip-vertical" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Coord fichiers (bas) -->
+      </div>
+    </div>
+
+    <!-- ══════════════════ PANNEAU DROITE ══════════════════ -->
+    <div class="w-80 flex-shrink-0 flex flex-col bg-ce-800 overflow-hidden">
+      <!-- Tabs -->
+      <div class="flex border-b border-ce-700 px-4">
+        <button class="tab-btn border-b-2 py-3 px-3 text-sm font-medium" id="tabBtn-moves">
+          Coups
+        </button>
+        <button class="tab-btn active border-b-2 py-3 px-3 text-sm font-medium" id="tabBtn-comment">
+          Analyse IA
+        </button>
+      </div>
+
+      <!-- Tab: Commentaire IA -->
+      <div id="tab-comment" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+        <!-- Coup actuel -->
+        <div class="flex items-center gap-3">
+          <div id="annotationBadge" class="w-8 h-8 rounded-md flex items-center justify-center text-sm font-bold"
+            style="background:#e0525220;color:#e05252">_</div>
+          <div>
+            <div id="coupActuel" class="text-ce-100 font-semibold text-sm">_</div>
+            <div id="annotationLabel" class="text-xs font-medium" style="color:#e05252">_</div>
+          </div>
+          <div class="ml-auto text-right">
+            <div class="text-xs text-ce-500">Meilleur coup</div>
+            <div id="meilleurCoupLabel" class="text-ce-green font-mono font-semibold text-sm">_</div>
+          </div>
+        </div>
+
+        <!-- Perte en centipawns -->
+        <div class="bg-ce-750 rounded-md p-3 border border-ce-700">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs text-ce-400">Évaluation avant</span>
+            <span id="evalAvant" class="font-mono text-xs font-semibold text-ce-green">_</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-xs text-ce-400">Évaluation après</span>
+            <span id="evalApres" class="font-mono text-xs font-semibold" style="color:#e05252">_</span>
+          </div>
+          <div class="mt-2 pt-2 border-t border-ce-700 flex justify-between items-center">
+            <span class="text-xs text-ce-400">Perte</span>
+            <span id="perteCentipawns" class="font-mono text-xs font-bold" style="color:#e05252">_ centipawns</span>
+          </div>
+        </div>
+
+
+
+        <!-- Commentaire -->
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-5 h-5 rounded bg-ce-750 flex items-center justify-center">
+              <i data-lucide="bot" class="w-3 h-3 text-ce-green"></i>
+            </div>
+            <span class="text-xs font-semibold text-ce-400 uppercase tracking-widest">Analyse IA</span>
+          </div>
+          <div class="comment-box" id="commentaireIA">
+            En jouant <strong class="text-ce-100">Cf6</strong>, tu as laissé
+            ta tour en e4 complètement en prise sans compensation. Le coup
+            <strong class="text-ce-green">Txe4</strong> était bien meilleur —
+            il capturait un pion central et plaçait ta tour sur une colonne
+            ouverte avec une pression immédiate sur le roi adverse. Ce type
+            d'erreur, oublier de vérifier si ses pièces sont en prise avant de
+            développer, apparaît souvent dans tes parties sous pression de
+            temps.
+          </div>
+        </div>
+
+        <!-- Pattern récurrent -->
+        <div class="bg-ce-750 border border-ce-700 rounded-md p-3">
+          <div class="flex items-center gap-2 mb-1.5">
+            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-yellow-500"></i>
+            <span class="text-xs font-semibold text-ce-300">Pattern détecté</span>
+          </div>
+          <p class="text-xs text-ce-400 leading-relaxed">
+            Tu as fait ce type de gaffe
+            <strong class="text-ce-300">4 fois</strong> sur tes 10 dernières
+            parties — oublier des pièces en prise lors d'un développement.
+            Entraîne-toi sur des puzzles de <em>"hanging pieces"</em>.
+          </p>
+        </div>
+
+        <!-- Bouton rejouer -->
+        <button
+          class="w-full flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-semibold transition-colors"
+          style="
+              background: #1e3310;
+              color: #81b64c;
+              border: 1px solid #4a6e28;
+            ">
+          <i data-lucide="swords" class="w-4 h-4"></i>
+          Rejouer depuis ce coup vs IA
+        </button>
+      </div>
+
+      <!-- Tab: Liste des coups -->
+      <div id="tab-moves" class="flex-1 overflow-y-auto p-3 hidden">
+        <div id="moveListContainer" class="flex flex-col gap-0.5"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ══════════════════ JS ══════════════════ -->
+  <script type="module" src="/script/analyse.js"></script>
+</body>
+
+</html>

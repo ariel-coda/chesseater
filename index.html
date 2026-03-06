@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="fr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChessEater</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              // Chess.com-inspired green palette
+              "ce-green": "#81b64c",
+              "ce-green-dark": "#6a9a3a",
+              "ce-green-dim": "#4a6e28",
+              "ce-green-muted": "#2d4a18",
+              // Grays
+              "ce-900": "#1a1a1a",
+              "ce-800": "#242424",
+              "ce-750": "#2a2a2a",
+              "ce-700": "#302f2f",
+              "ce-600": "#3d3c3c",
+              "ce-500": "#555555",
+              "ce-400": "#7a7a7a",
+              "ce-300": "#a0a0a0",
+              "ce-200": "#c8c8c8",
+              "ce-100": "#e8e8e8",
+            },
+            fontFamily: {
+              display: ['"DM Sans"', "sans-serif"],
+              mono: ['"JetBrains Mono"', "monospace"],
+            },
+            boxShadow: {
+              "inner-sm": "inset 0 1px 3px rgba(0,0,0,0.5)",
+              "green-glow": "0 0 0 2px rgba(129,182,76,0.35)",
+            },
+          },
+        },
+      };
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style/style.css" />
+  </head>
+
+  <body class="bg-ce-900 text-ce-100 h-screen flex overflow-hidden select-none">
+    <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════ -->
+    <aside
+      class="w-52 flex-shrink-0 bg-ce-800 border-r border-ce-700 flex flex-col"
+    >
+      <!-- Logo -->
+      <div class="px-4 py-5 border-b border-ce-700">
+        <div class="flex items-center gap-2.5">
+          <div>
+            <div
+              class="font-semibold text-ce-100 italic tracking-wide leading-none"
+            >
+              ChessEater
+            </div>
+            <div class="text-ce-400 text-xs mt-0.5">Analyseur de parties</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 py-3 px-2 flex flex-col gap-0.5">
+        <a
+          href="./index.html"
+          class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-200"
+        >
+          <i data-lucide="home" class="nav-icon w-4 h-4 text-ce-400"></i>
+          Accueil
+        </a>
+        <a
+          href="./pages/analyse.html"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 opacity-50"
+        >
+          <i data-lucide="bar-chart-2" class="nav-icon w-4 h-4"></i>
+          Analyse
+        </a>
+        <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50">
+        <i data-lucide="swords" class="nav-icon w-4 h-4"></i>
+        Rejouer vs IA
+      </a-->
+        <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50">
+        <i data-lucide="trending-up" class="nav-icon w-4 h-4"></i>
+        Progression
+      </a-->
+
+        <!--div class="mt-3 px-3">
+        <div class="text-ce-500 text-xs font-medium uppercase tracking-widest mb-2">Outils</div>
+      </div>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50">
+        <i data-lucide="puzzle" class="nav-icon w-4 h-4"></i>
+        Puzzles
+      </a-->
+        <a
+          href="#"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50"
+        >
+          <i data-lucide="settings" class="nav-icon w-4 h-4"></i>
+          Paramètres
+        </a>
+      </nav>
+
+      <!-- Connect button -->
+      <div class="p-3 border-t border-ce-700">
+        <button
+          class="w-full import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm py-2.5 rounded-md flex items-center justify-center gap-2 transition-colors"
+        >
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          Se connecter
+        </button>
+      </div>
+    </aside>
+
+    <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════ -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top bar -->
+      <header
+        class="bg-ce-800 border-b border-ce-700 px-6 py-4 flex items-center gap-4"
+      >
+        <!-- Username input -->
+        <div class="relative flex-1 max-w-md">
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ce-400">
+            <i data-lucide="at-sign" class="w-4 h-4"></i>
+          </div>
+          <input
+            id="usernameInput"
+            type="text"
+            placeholder="Entrez votre nom d'utilisateur"
+            class="username-input w-full bg-ce-750 border border-ce-600 text-ce-100 placeholder-ce-500 text-sm pl-10 pr-4 py-2.5 rounded-md font-display transition-all"
+          />
+        </div>
+
+        <!-- Source tabs -->
+        <div class="flex items-center gap-2">
+          <!-- PGN -->
+          <button
+            onclick="setSource('pgn')"
+            id="tab-pgn"
+            class="source-tab flex items-center gap-2 px-4 py-2.5 rounded-md border border-ce-600 text-ce-400 text-sm font-medium bg-ce-750"
+          >
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            PGN
+          </button>
+
+          <!-- Chess.com -->
+          <button
+            onclick="setSource('chesscom')"
+            id="tab-chesscom"
+            class="source-tab active flex items-center gap-2 px-4 py-2.5 rounded-md border-ce-600 border text-sm font-medium"
+          >
+            <!-- Chess.com SVG logo -->
+            <img src="./assets/logo/chess.com.png" alt="" class="w-5" />
+            Chess.com
+          </button>
+
+          <!-- Lichess -->
+          <button
+            onclick="setSource('lichess')"
+            id="tab-lichess"
+            class="source-tab flex items-center gap-2 px-4 py-2.5 rounded-md border border-ce-600 text-ce-400 text-sm font-medium bg-ce-750"
+          >
+            <!-- Lichess horse SVG logo -->
+            <img src="./assets/logo/lichess.png" alt="" class="w-5" />
+            Lichess
+          </button>
+        </div>
+
+        <!-- Import button -->
+        <button
+          id="importBtn"
+          onclick="startImport()"
+          class="import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm px-5 py-2.5 rounded-md flex items-center gap-2 transition-colors flex-shrink-0"
+        >
+          <i data-lucide="download" class="w-4 h-4"></i>
+          Importer
+        </button>
+      </header>
+
+      <!-- Content area -->
+      <div class="flex-1 overflow-hidden flex flex-col px-6 py-5 gap-4">
+        <!-- Section title -->
+        <div class="flex items-center justify-between">
+          <h1 class="text-ce-100 font-semibold text-lg tracking-tight">
+            Mes parties
+          </h1>
+          <div id="gameCount" class="text-ce-400 text-sm hidden">
+            <span id="countNumber">0</span> parties chargées
+          </div>
+        </div>
+
+        <!-- Games panel -->
+        <div
+          class="flex-1 bg-ce-800 rounded-lg border border-ce-700 overflow-hidden flex flex-col"
+        >
+          <!-- Empty / loading state -->
+          <div
+            id="emptyState"
+            class="flex-1 flex flex-col items-center justify-center gap-4 text-ce-500"
+          >
+            <i data-lucide="chess" class="w-10 h-10 opacity-30"></i>
+            <div class="text-center">
+              <p class="text-sm font-medium text-ce-400">
+                Aucune partie chargée
+              </p>
+              <p class="text-xs text-ce-500 mt-1">
+                Entrez votre pseudo et importez vos parties
+              </p>
+            </div>
+          </div>
+
+          <!-- Loading state -->
+          <div
+            id="loadingState"
+            class="flex-1 flex-col items-center justify-center gap-4 hidden"
+          >
+            <div
+              class="w-10 h-10 rounded-full border-2 border-ce-700 border-t-ce-green spinner"
+            ></div>
+            <p class="text-ce-400 text-sm">Chargement des parties...</p>
+          </div>
+
+          <!-- Games list -->
+          <div id="gamesList" class="flex-1 overflow-y-auto hidden">
+            <!-- Header row -->
+            <div
+              class="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-ce-700 text-ce-500 text-xs font-medium uppercase tracking-widest"
+            >
+              <div class="col-span-1">Résultat</div>
+              <div class="col-span-3">Adversaire</div>
+              <div class="col-span-2">Format</div>
+              <div class="col-span-2">Date</div>
+              <div class="col-span-2">Précision</div>
+              <div class="col-span-2">Plateforme</div>
+            </div>
+
+            <!-- Game rows injected by JS -->
+            <div id="gamesContainer"></div>
+          </div>
+        </div>
+
+        <!-- Bottom action bar -->
+        <div class="flex items-center justify-between">
+          <div id="analyzeBar" class="hidden">
+            <button
+              onclick="analyzeSelected()"
+              class="import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm px-6 py-2.5 rounded-md flex items-center gap-2 transition-colors"
+            >
+              <img src="./assets/icones/electric.png" alt="" class="w-4 h-4" />
+              Analyser la partie sélectionnée
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════════
+       JS
+  ══════════════════════════════════════════ -->
+    <script>
+      lucide.createIcons();
+
+      let currentSource = "chesscom";
+      let games = [];
+      let selectedGame = null;
+
+      function setSource(src) {
+        currentSource = src;
+        ["pgn", "chesscom", "lichess"].forEach((s) => {
+          document.getElementById("tab-" + s).classList.remove("active");
+        });
+        document.getElementById("tab-" + src).classList.add("active");
+      }
+
+      //fonction pour charger les parties depuis les sites externes sélectionnés
+
+      async function startImport() {
+        const username = document.getElementById("usernameInput").value.trim();
+
+        if (!username) {
+          alert("Entre ton nom d'utilisateur d'abord.");
+          return;
+        }
+
+        // Affiche le loader
+        document.getElementById("emptyState").classList.add("hidden");
+        document.getElementById("gamesList").classList.add("hidden");
+        document.getElementById("loadingState").classList.remove("hidden");
+        document.getElementById("loadingState").classList.add("flex");
+
+        try {
+          if (currentSource === "chesscom") {
+            const response = await fetch(
+              `/api/games/chesscom/all?username=${username}`,
+            );
+
+            if (!response.ok)
+              throw new Error("Utilisateur introuvable sur Chess.com");
+
+            const data = await response.json();
+
+            games = data.games.map((g, i) => {
+              // L'utilisateur joue-t-il blanc ou noir ?
+              const isWhite =
+                g.white.username.toLowerCase() === username.toLowerCase();
+              const me = isWhite ? g.white : g.black;
+              const opponent = isWhite ? g.black : g.white;
+
+              // Résultat
+              let result = "draw";
+              if (me.result === "win") result = "win";
+              if (
+                ["resigned", "checkmated", "timeout", "abandoned"].includes(
+                  me.result,
+                )
+              )
+                result = "loss";
+
+              // Date lisible
+              const date = new Date(g.end_time * 1000);
+              const diffDays = Math.floor(
+                (new Date() - date) / (1000 * 60 * 60 * 24),
+              );
+              const dateLabel =
+                diffDays === 0
+                  ? "Aujourd'hui"
+                  : diffDays === 1
+                    ? "Hier"
+                    : `Il y a ${diffDays}j`;
+
+              // Nombre de coups approximatif depuis le PGN
+              const moves = g.pgn ? g.pgn.split(/\d+\./).length - 1 : 0;
+
+              return {
+                id: i,
+                result,
+                opponent: opponent.username,
+                rating: opponent.rating,
+                format:
+                  g.time_class.charAt(0).toUpperCase() +
+                  g.time_class.slice(1) +
+                  " " +
+                  g.time_control,
+                date: dateLabel,
+                accuracy: me.accuracy ?? null, // disponible seulement pour les membres premium Chess.com
+                platform: "chesscom",
+                moves,
+                pgn: g.pgn, // on garde le PGN pour l'analyse Stockfish plus tard
+              };
+            });
+
+            document.getElementById("loadingState").classList.add("hidden");
+            document.getElementById("loadingState").classList.remove("flex");
+            renderGames(games.reverse());
+
+          } 
+          //========================================================================= import des parties Lichess
+          else if (currentSource == "lichess") {
+            const response = await fetch(
+              `/api/games/lichess/all?username=${username}`,
+            );
+
+            if (!response.ok)
+              throw new Error("Utilisateur introuvable sur Lichess");
+
+            const data = await response.json();
+
+            games = data.games.map((g, i) => {
+              // Lichess appelle ça "players" au lieu de "white"/"black"
+              const isWhite =
+                g.players.white.user?.name.toLowerCase() ===
+                username.toLowerCase();
+              const me = isWhite ? g.players.white : g.players.black;
+              const opponent = isWhite ? g.players.black : g.players.white;
+
+              // Lichess appelle ça "winner" au lieu de "result"
+              let result = "draw";
+              if (g.winner === (isWhite ? "white" : "black")) result = "win";
+              if (g.winner === (isWhite ? "black" : "white")) result = "loss";
+
+              // Lichess donne le temps en millisecondes au lieu de secondes
+              const date = new Date(g.createdAt);
+              const diffDays = Math.floor(
+                (new Date() - date) / (1000 * 60 * 60 * 24),
+              );
+              const dateLabel =
+                diffDays === 0
+                  ? "Aujourd'hui"
+                  : diffDays === 1
+                    ? "Hier"
+                    : `Il y a ${diffDays}j`;
+
+              // Lichess appelle ça "moves" directement
+              const moves = g.moves ? g.moves.split(" ").length : 0;
+
+              return {
+                id: i,
+                result,
+                opponent: opponent.user?.name ?? "Anonyme",
+                rating: opponent.rating ?? "?",
+                format: g.speed.charAt(0).toUpperCase() + g.speed.slice(1),
+                date: dateLabel,
+                accuracy: me.analysis?.accuracy ?? null,
+                platform: "lichess",
+                moves,
+                pgn: g.pgn ?? null,
+              };
+            });
+
+            data.games.sort((a, b) => b.createdAt - a.createdAt);
+
+            document.getElementById("loadingState").classList.add("hidden");
+            document.getElementById("loadingState").classList.remove("flex");
+            renderGames(games);
+          }else{
+          alert("PGN disponible d'ici peu");
+        }
+        } catch (error) {
+          document.getElementById("loadingState").classList.add("hidden");
+          document.getElementById("loadingState").classList.remove("flex");
+          document.getElementById("emptyState").classList.remove("hidden");
+          alert("Erreur : " + error.message);
+        }
+      }
+
+      function renderGames(games) {
+        const container = document.getElementById("gamesContainer");
+        container.innerHTML = "";
+
+        games.forEach((g, i) => {
+          const row = document.createElement("div");
+          row.className =
+            "game-card grid grid-cols-12 gap-3 px-4 py-3 border-b border-ce-700 cursor-pointer text-sm items-center fade-up";
+          row.style.animationDelay = i * 40 + "ms";
+          row.style.opacity = 0;
+          row.dataset.id = g.id;
+
+          const resultLabels = {
+            win: "Victoire",
+            loss: "Défaite",
+            draw: "Nulle",
+          };
+          const resultClass = {
+            win: "result-win",
+            loss: "result-loss",
+            draw: "result-draw",
+          };
+
+          const accuracyColor = !g.accuracy
+            ? "#555555"
+            : g.accuracy >= 80
+              ? "#81b64c"
+              : g.accuracy >= 65
+                ? "#c8b84c"
+                : "#e05252";
+          const platformLabel =
+            g.platform === "chesscom" ? "Chess.com" : "Lichess";
+          const platformClass =
+            g.platform === "chesscom"
+              ? "platform-chesscom"
+              : "platform-lichess";
+
+          row.innerHTML = `
+          <div class="col-span-1">
+            <span class="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-semibold ${resultClass[g.result]}">
+              ${resultLabels[g.result]}
+            </span>
+          </div>
+          <div class="col-span-3 flex flex-col">
+            <span class="text-ce-100 font-medium">${g.opponent}</span>
+            <span class="text-ce-500 text-xs">${g.rating} Elo · ${g.moves} coups</span>
+          </div>
+          <div class="col-span-2 text-ce-300 font-mono text-xs">${g.format}</div>
+          <div class="col-span-2 text-ce-400 text-xs">${g.date}</div>
+          <div class="col-span-2 flex items-center gap-2">
+            <div class="flex-1 h-1 bg-ce-700 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width:${g.accuracy}%; background:${accuracyColor}"></div>
+            </div>
+            <span class="text-xs font-semibold font-mono" style="color:${accuracyColor}">${g.accuracy ? g.accuracy + "%" : "—"}</span>
+          </div>
+          <div class="col-span-2">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium ${platformClass}">
+              ${platformLabel}
+            </span>
+          </div>
+        `;
+
+          row.addEventListener("click", () => selectGame(g.id, row));
+          container.appendChild(row);
+        });
+
+        document.getElementById("gamesList").classList.remove("hidden");
+        document.getElementById("gameCount").classList.remove("hidden");
+        document.getElementById("countNumber").textContent = games.length;
+
+        // Trigger fade-up
+        setTimeout(() => {
+          container.querySelectorAll(".fade-up").forEach((el) => {
+            el.style.opacity = 1;
+          });
+        }, 50);
+
+        lucide.createIcons();
+      }
+
+      function platformIcon(platform) {
+        if (platform === "chesscom")
+          return `<svg width="12" height="12" viewBox="0 0 45 45" fill="currentColor"><path d="M22.5 2C11.178 2 2 11.178 2 22.5S11.178 43 22.5 43 43 33.822 43 22.5 33.822 2 22.5 2zm0 4c9.113 0 16.5 7.387 16.5 16.5S31.613 39 22.5 39 6 31.613 6 22.5 13.387 6 22.5 6zm-4 6v3h-3v3h3v3h2v-3h2v3h2v-3h3v-3h-3v-3h-2v3h-2v-3h-2z"/></svg>`;
+        return `<svg width="12" height="12" viewBox="0 0 50 50" fill="currentColor"><path d="M38.956.5c-3.53.418-6.452 2.525-8.028 5.368L30.928 6c-.638.116-1.278.256-1.905.44l-.478.14-.162.05-.157.055-.16.063-.13.055-.165.075-.155.075-.14.08-.14.09-.128.085-.155.11-.14.11-.128.12-.12.115-.12.128-.1.12-.1.13-.085.13-.07.13-.07.14-.06.14-.05.14-.04.15-.03.155-.02.155-.01.158v.158l.01.16.02.155.03.155.04.15.05.14.06.14.07.13.07.128.085.13.1.12.1.12.12.115.128.11.14.1.155.1.128.08.14.07.155.065.13.05.165.04.13.04.16.025.155.015.158.01h.16l.155-.01.16-.015.155-.025.16-.04.155-.04.128-.05.165-.065.14-.07.128-.08.155-.1.14-.1.128-.11.12-.115.12-.12.1-.12.1-.128.085-.13.07-.13.07-.14.06-.14.05-.14.04-.15.03-.155.02-.155.01-.16v-.158l-.01-.158-.02-.155-.03-.155c1.305-.876 2.87-1.39 4.558-1.39 4.418 0 8 3.582 8 8 0 3.826-2.693 7.03-6.283 7.814l-.067.013-.128.03-.12.04-.12.05-.11.06-.1.07-.09.08-.08.09-.07.1-.06.11-.05.12-.04.13-.02.13v.13l.02.13.04.13.05.12.06.11.07.1.08.09.09.08.1.07.11.06.12.05.12.04.128.03.13.01h.128l.13-.01.128-.03.12-.04.12-.05.11-.06.1-.07.09-.08.08-.09.07-.1.06-.11.05-.12.04-.13.02-.13V32.5l-.01-.128-.02-.13-.04-.13-.05-.12-.06-.11-.07-.1-.08-.09-.09-.08-.1-.07-.11-.06-.12-.05-.12-.04c3.578-.776 6.45-3.118 7.884-6.254C46.946 21.47 47 20.99 47 20.5c0-7.18-5.82-13-13-13-.658 0-1.304.05-1.935.145z"/></svg>`;
+      }
+
+      function selectGame(id, row) {
+        document
+          .querySelectorAll(".game-card")
+        console.log('id reçu :', id, 'type :', typeof id);
+        document.querySelectorAll('.game-card').forEach(c => c.classList.remove('selected'));
+        row.classList.add("selected");
+        selectedGame = Number(id);
+        document.getElementById("analyzeBar").classList.remove("hidden");
+      }
+
+      function analyzeSelected() {
+        const partie = games.find(g => g.id === selectedGame);
+        localStorage.setItem('chesseater_partie', JSON.stringify(partie));
+        window.location.href = './pages/analyse.html';
+      }
+    </script>
+  </body>
+</html>

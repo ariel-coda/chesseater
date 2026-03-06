@@ -1,0 +1,353 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #3d3c3c;
+  border-radius: 2px;
+}
+
+/* ── NAV ── */
+.nav-item {
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.nav-item:hover {
+  background: #2a2a2a;
+}
+.nav-item.active {
+  background: #2a2a2a;
+  color: #81b64c;
+}
+.nav-item.active .nav-icon {
+  color: #81b64c;
+}
+
+/* ── EVAL BAR ── */
+.eval-bar-track {
+  width: 14px;
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #302f2f;
+}
+.eval-bar-white {
+  position: absolute;
+  bottom: 50%;
+  left: 0;
+  right: 0;
+  background: #e8e8e8;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 0 5px 5px;
+}
+.eval-bar-black {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border-bottom: 1px solid #302f2f;
+}
+.eval-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.55rem;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* ── BOARD ── */
+#board {
+  width: 720px;
+  height: 720px;
+}
+
+#board .cg-wrap {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.sq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: filter 0.1s;
+}
+.sq:hover {
+  filter: brightness(1.12);
+}
+.sq.light {
+  background: #f0d9b5;
+}
+.sq.dark {
+  background: #b58863;
+}
+
+/* À mettre dans ton fichier CSS */
+.cg-wrap rect.blue   { fill: rgba(0, 184, 217, 0.4) !important; }
+.cg-wrap rect.green  { fill: rgba(129, 182, 76, 0.4) !important; }
+.cg-wrap rect.yellow { fill: rgba(200, 184, 76, 0.4) !important; }
+.cg-wrap rect.red    { fill: rgba(224, 82, 82, 0.4) !important; }
+
+/* Highlights */
+.sq.hl-from {
+  background: rgba(129, 182, 76, 0.55) !important;
+}
+.sq.hl-to {
+  background: rgba(129, 182, 76, 0.55) !important;
+}
+.sq.hl-best {
+  box-shadow: inset 0 0 0 3px rgba(129, 182, 76, 0.9);
+}
+.sq.hl-danger {
+  box-shadow: inset 0 0 0 3px rgba(224, 82, 82, 0.8);
+}
+.sq.hl-dot::after {
+  content: "";
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+/* Pieces */
+.piece {
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  line-height: 1;
+  user-select: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+  transition: transform 0.1s;
+  z-index: 2;
+}
+.piece:hover {
+  transform: scale(1.08);
+}
+
+/* Coord labels */
+.coord-file,
+.coord-rank {
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  color: #7a7a7a;
+  position: absolute;
+}
+.coord-file {
+  bottom: 2px;
+  right: 3px;
+}
+.coord-rank {
+  top: 2px;
+  left: 3px;
+}
+
+/* Annotation badge on square */
+.ann-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  font-weight: 800;
+  z-index: 20;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+.ann-brilliant {
+  background: #00b8d9;
+  color: #fff;
+}
+.ann-best {
+  background: #81b64c;
+  color: #fff;
+}
+.ann-excellent {
+  background: #4a8c4a;
+  color: #fff;
+}
+.ann-good {
+  background: #4a7a4a;
+  color: #fff;
+}
+.ann-inaccuracy {
+  background: #c8b84c;
+  color: #1a1a1a;
+}
+.ann-mistake {
+  background: #d0823c;
+  color: #fff;
+}
+.ann-blunder {
+  background: #e05252;
+  color: #fff;
+}
+
+/* Arrow SVG */
+.arrow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── MOVE LIST ── */
+.move-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr;
+}
+.move-cell {
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: background 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.move-cell:hover {
+  background: #2a2a2a;
+}
+.move-cell.active {
+  background: #81b64c;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+.move-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── AI COMMENT ── */
+.comment-box {
+  border-left: 3px solid #81b64c;
+  background: #2a2a2a;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: #c8c8c8;
+}
+
+/* ── SUMMARY CHIPS ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+/* Controls */
+.ctrl {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #302f2f;
+  background: #242424;
+  color: #a0a0a0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+.ctrl:hover {
+  background: #2a2a2a;
+  border-color: #555;
+  color: #e8e8e8;
+}
+
+/* Player strip */
+.player-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+.player-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.player-clock {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #2a2a2a;
+  border: 1px solid #302f2f;
+  padding: 3px 9px;
+  border-radius: 5px;
+}
+
+/* Tabs */
+.tab-btn {
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.tab-btn.active {
+  color: #81b64c;
+  border-bottom-color: #81b64c;
+}
+.tab-btn:not(.active) {
+  color: #7a7a7a;
+  border-bottom-color: transparent;
+}
+.tab-btn:not(.active):hover {
+  color: #a0a0a0;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fadeUp 0.25s ease forwards;
+}
