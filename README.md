@@ -5,7 +5,7 @@
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)
 ![Stack](https://img.shields.io/badge/stack-JS%20%7C%20Python%20%7C%20Stockfish-informational?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-green?style=flat-square)
 
 
 
