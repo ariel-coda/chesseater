@@ -8,7 +8,7 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -16,124 +16,119 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #2d3748;
-    border-radius: 3px;
+    background: #3d3c3c;
+    border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4b5563;
+    background: #555;
 }
 
 /* Sidebar active item */
 .nav-item {
-    transition: all 0.2s ease;
+    transition: background 0.15s, color 0.15s;
 }
 
 .nav-item:hover {
-    background: rgba(45, 55, 72, 0.5);
+    background: #2a2a2a;
 }
 
 .nav-item.active {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: #2a2a2a;
+    color: #81b64c;
 }
 
 .nav-item.active .nav-icon {
-    color: #10b981;
+    color: #81b64c;
 }
 
 /* Input focus ring */
 .username-input:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 0 2px rgba(129, 182, 76, 0.5);
 }
 
 /* Source toggle */
 .source-tab {
-    transition: all 0.2s ease;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .source-tab.active {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: #3b82f6;
-    color: #3b82f6;
+    background: #2d4a18;
+    border-color: #81b64c;
+    color: #81b64c;
 }
 
 .source-tab:not(.active):hover {
-    background: rgba(45, 55, 72, 0.5);
+    background: #2a2a2a;
+    border-color: #555;
 }
 
 /* Game card */
 .game-card {
-    transition: all 0.2s ease;
-    border-color: transparent;
+    transition: background 0.15s, border-color 0.15s;
 }
 
 .game-card:hover {
-    background: rgba(45, 55, 72, 0.4);
+    background: #2a2a2a;
+    border-color: #555;
 }
 
 .game-card.selected {
-    border-color: #10b981;
-    background: rgba(16, 185, 129, 0.05);
+    border-color: #81b64c;
+    background: #1f2d12;
 }
 
 /* Platform badge */
 .platform-chesscom {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    background: #2d4a18;
+    color: #81b64c;
 }
 
 .platform-lichess {
-    background: rgba(139, 92, 246, 0.1);
-    color: #8b5cf6;
+    background: #2a2a35;
+    color: #a0a0d0;
 }
 
 /* Result badge */
 .result-win {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: #1e3a1e;
+    color: #81b64c;
 }
 
 .result-loss {
-    background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
+    background: #3a1e1e;
+    color: #e05252;
 }
 
 .result-draw {
-    background: rgba(245, 158, 11, 0.1);
-    color: #f59e0b;
+    background: #2a2a1e;
+    color: #c8b84c;
 }
 
 /* Move badge colors */
 .badge-brilliant {
-    background: #06b6d4;
-    color: white;
+    background: #00b8d9;
 }
 
 .badge-best {
-    background: #10b981;
-    color: white;
+    background: #81b64c;
 }
 
 .badge-good {
-    background: #3b82f6;
-    color: white;
+    background: #4a8c4a;
 }
 
 .badge-inaccuracy {
-    background: #f59e0b;
-    color: white;
+    background: #c8b84c;
 }
 
 .badge-mistake {
-    background: #f97316;
-    color: white;
+    background: #d0823c;
 }
 
 .badge-blunder {
-    background: #ef4444;
-    color: white;
+    background: #e05252;
 }
 
 /* Loader spinner */
