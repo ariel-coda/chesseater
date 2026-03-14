@@ -52,7 +52,7 @@
     <link rel="stylesheet" href="style/style.css" />
   </head>
 
-  <body class="bg-ce-900 text-ce-100 h-screen flex overflow-hidden select-none">
+  <body class="bg-ce-900 text-ce-100 h-screen flex overflow-hidden select-none dark">
     <!-- ══════════════════════════════════════════
        SIDEBAR
   ══════════════════════════════════════════ -->
@@ -62,7 +62,7 @@
       <!-- Logo -->
       <div class="px-4 py-5 border-b border-ce-700">
         <div class="flex items-center gap-2.5">
-          <div>
+          <div class="flex-1">
             <div
               class="font-semibold text-ce-100 italic tracking-wide leading-none"
             >
@@ -70,6 +70,14 @@
             </div>
             <div class="text-ce-400 text-xs mt-0.5">Analyseur de parties</div>
           </div>
+          <!-- Dark mode toggle -->
+          <button
+            id="darkModeToggle"
+            class="p-1.5 hover:bg-ce-700 rounded-md transition-colors"
+            title="Basculer le mode sombre"
+          >
+            <i data-lucide="moon" class="w-4 h-4 text-ce-400 hover:text-ce-100 transition-colors" id="darkModeIcon"></i>
+          </button>
         </div>
       </div>
 
@@ -80,14 +88,14 @@
           class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-200"
         >
           <i data-lucide="home" class="nav-icon w-4 h-4 text-ce-400"></i>
-          Accueil
+          Analyseur de parties
         </a>
         <a
-          href="./pages/analyse.html"
-          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 opacity-50"
+          href="#"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200"
         >
-          <i data-lucide="bar-chart-2" class="nav-icon w-4 h-4"></i>
-          Analyse
+          <i data-lucide="book-open" class="nav-icon w-4 h-4"></i>
+          Étudier
         </a>
         <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50">
         <i data-lucide="swords" class="nav-icon w-4 h-4"></i>
@@ -114,13 +122,21 @@
         </a>
       </nav>
 
-      <!-- Connect button -->
-      <div class="p-3 border-t border-ce-700">
+      <!-- Auth buttons -->
+      <div class="p-3 border-t border-ce-700 space-y-2">
         <button
-          class="w-full import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm py-2.5 rounded-md flex items-center justify-center gap-2 transition-colors"
+          id="loginBtn"
+          class="w-full bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm py-2.5 rounded-md flex items-center justify-center gap-2 transition-colors"
         >
           <i data-lucide="log-in" class="w-4 h-4"></i>
           Se connecter
+        </button>
+        <button
+          id="signupBtn"
+          class="w-full bg-ce-700 hover:bg-ce-600 text-ce-100 font-semibold text-sm py-2.5 rounded-md flex items-center justify-center gap-2 transition-colors border border-ce-600"
+        >
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          S'inscrire
         </button>
       </div>
     </aside>
@@ -148,7 +164,7 @@
 
         <!-- Source tabs -->
         <div class="flex items-center gap-2">
-          <!-- PGN -->
+          <!-- PGN Upload -->
           <button
             onclick="setSource('pgn')"
             id="tab-pgn"
@@ -180,6 +196,14 @@
             Lichess
           </button>
         </div>
+
+        <!-- PGN file input (hidden) -->
+        <input 
+          type="file" 
+          id="pgnFileInput" 
+          accept=".pgn" 
+          style="display: none;"
+        />
 
         <!-- Import button -->
         <button
@@ -279,15 +303,135 @@
       let games = [];
       let selectedGame = null;
 
+      // ══════════════════════════════════════════
+      // DARK MODE
+      // ══════════════════════════════════════════
+      function initDarkMode() {
+        const isDark = localStorage.getItem("chesseater_darkMode") !== "false";
+        applyDarkMode(isDark);
+        
+        document.getElementById("darkModeToggle").addEventListener("click", () => {
+          const currentlyDark = document.documentElement.classList.contains("dark");
+          applyDarkMode(!currentlyDark);
+          localStorage.setItem("chesseater_darkMode", !currentlyDark);
+        });
+      }
+
+      function applyDarkMode(isDark) {
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          document.getElementById("darkModeIcon").setAttribute("data-lucide", "sun");
+        } else {
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          document.getElementById("darkModeIcon").setAttribute("data-lucide", "moon");
+        }
+        lucide.createIcons();
+      }
+
+      // ══════════════════════════════════════════
+      // AUTH BUTTONS
+      // ══════════════════════════════════════════
+      document.getElementById("loginBtn").addEventListener("click", () => {
+        alert("Page de connexion à venir bientôt!");
+      });
+
+      document.getElementById("signupBtn").addEventListener("click", () => {
+        alert("Page d'inscription à venir bientôt!");
+      });
+
       function setSource(src) {
         currentSource = src;
         ["pgn", "chesscom", "lichess"].forEach((s) => {
           document.getElementById("tab-" + s).classList.remove("active");
         });
         document.getElementById("tab-" + src).classList.add("active");
+        
+        // Si PGN est sélectionné, ouvrir le file input
+        if (src === "pgn") {
+          document.getElementById("pgnFileInput").click();
+        }
       }
 
       //fonction pour charger les parties depuis les sites externes sélectionnés
+
+      // ══════════════════════════════════════════
+      // PGN FILE HANDLING
+      // ══════════════════════════════════════════
+      document.getElementById("pgnFileInput").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          const content = event.target.result;
+          
+          // Parse PGN content
+          try {
+            games = parsePGNContent(content);
+            
+            if (games.length === 0) {
+              alert("Aucune partie trouvée dans le fichier PGN.");
+              return;
+            }
+
+            document.getElementById("emptyState").classList.add("hidden");
+            document.getElementById("gamesList").classList.remove("hidden");
+            document.getElementById("gameCount").classList.remove("hidden");
+            renderGames(games);
+          } catch (error) {
+            alert("Erreur lors de la lecture du fichier PGN: " + error.message);
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      function parsePGNContent(pgnText) {
+        const pgnGames = [];
+        const games = pgnText.split(/\n\s*\n/);
+        
+        games.forEach((gameBlock, index) => {
+          const lines = gameBlock.trim().split("\n");
+          const headers = {};
+          let moveIndex = 0;
+
+          // Parse headers
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (line.startsWith("[")) {
+              const match = line.match(/\[(\w+)\s+"([^"]*)"\]/);
+              if (match) {
+                headers[match[1]] = match[2];
+              }
+            } else {
+              moveIndex = i;
+              break;
+            }
+          }
+
+          // Parse moves
+          const moveLines = lines.slice(moveIndex).join(" ");
+          const pgn = moveLines.match(/(.+?)(\s*1-0\s*|\s*0-1\s*|\s*1\/2-1\/2\s*|$)/)?.[1] || moveLines;
+
+          if (pgn.trim()) {
+            pgnGames.push({
+              id: index,
+              opponent: headers.Black || headers.White || "Adversaire",
+              rating: headers.BlackElo || headers.WhiteElo || "?",
+              format: "PGN",
+              date: "Importé",
+              accuracy: null,
+              platform: "pgn",
+              moves: (pgn.match(/\d+\./g) || []).length,
+              pgn: pgn,
+              result: headers.Result === "1-0" ? "win" : headers.Result === "0-1" ? "loss" : "draw",
+            });
+          }
+        });
+
+        return pgnGames;
+      }
 
       async function startImport() {
         const username = document.getElementById("usernameInput").value.trim();
@@ -369,6 +513,12 @@
             renderGames(games.reverse());
 
           } 
+          //========================================================================= import des parties depuis PGN
+          else if (currentSource === "pgn") {
+            // PGN est déjà chargé via file input
+            alert("Les parties PGN sont déjà chargées. Sélectionnez une partie et analysez-la!");
+            return;
+          }
           //========================================================================= import des parties Lichess
           else if (currentSource == "lichess") {
             const response = await fetch(
@@ -539,6 +689,9 @@
         localStorage.setItem('chesseater_partie', JSON.stringify(partie));
         window.location.href = './pages/analyse.html';
       }
+
+      // Initialize dark mode on load
+      initDarkMode();
     </script>
   </body>
 </html>

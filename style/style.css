@@ -178,3 +178,44 @@ body {
 .sep {
     border-color: #302f2f;
 }
+
+/* Dark mode support */
+html.dark {
+    color-scheme: dark;
+}
+
+html.light {
+    color-scheme: light;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255, 255, 255);
+    color: rgb(26, 26, 26);
+}
+
+html.light body {
+    background-color: #f5f5f5;
+    color: #1a1a1a;
+}
+
+html.light .bg-ce-900 {
+    background-color: #f5f5f5;
+}
+
+html.light .bg-ce-800 {
+    background-color: #ffffff;
+}
+
+html.light .border-ce-700 {
+    border-color: #d0d0d0;
+}
+
+html.light .text-ce-100 {
+    color: #1a1a1a;
+}
+
+html.light .text-ce-400 {
+    color: #666;
+}
+
+html.light .text-ce-500 {
+    color: #888;
+}
