@@ -7,9 +7,9 @@ import { Chess } from "https://cdn.jsdelivr.net/npm/chess.js@1.0.0/+esm";
 lucide.createIcons();
 
 // ══════════════════════════════════════════
-// 2. LOCALSTORAGE
+// 2. SESSIONSTORAGE
 // ══════════════════════════════════════════
-const partieRaw = localStorage.getItem("chesseater_partie");
+const partieRaw = sessionStorage.getItem("gameToAnalyze");
 if (!partieRaw) window.location.href = "../index.html";
 const partie = JSON.parse(partieRaw);
 
@@ -49,13 +49,12 @@ const resultats = {
 const resultat = resultats[header.Result] ?? "?";
 const nbCoups = historique.length;
 
-document.getElementById("playerWhiteName").textContent = joueurBlanc;
-document.getElementById("playerWhiteElo").textContent = eloBlanc + " Elo";
-document.getElementById("playerBlackName").textContent = joueurNoir;
-document.getElementById("playerBlackElo").textContent = eloNoir + " Elo";
-document.getElementById("gameOpponent").textContent = "vs. " + partie.opponent;
-document.getElementById("gameInfo").textContent =
-  partie.format + " · " + nbCoups + " coups · " + resultat;
+// Update page title and info
+document.getElementById("gameTitle").textContent = partie.opponent + " · " + partie.format;
+document.getElementById("resultInfo").textContent = resultat;
+document.getElementById("formatInfo").textContent = partie.format;
+document.getElementById("movesInfo").textContent = nbCoups + " coups";
+document.getElementById("accuracyInfo").textContent = partie.accuracy ? partie.accuracy + "%" : "—";
 
 // ══════════════════════════════════════════
 // 5. CHESSGROUND
