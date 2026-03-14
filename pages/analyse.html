@@ -6,29 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ChessEater — Analyse</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+    <script>
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            "ce-green": "#81b64c",
-            "ce-green-dark": "#6a9a3a",
-            "ce-green-dim": "#4a6e28",
-            "ce-green-muted": "#1e3310",
-            "ce-900": "#1a1a1a",
-            "ce-800": "#242424",
-            "ce-750": "#2a2a2a",
-            "ce-700": "#302f2f",
-            "ce-600": "#3d3c3c",
-            "ce-500": "#555555",
-            "ce-400": "#7a7a7a",
-            "ce-300": "#a0a0a0",
-            "ce-200": "#c8c8c8",
-            "ce-100": "#e8e8e8",
+            "ce-brand": "#1f2937",
+            "ce-bg": "#0f1419",
+            "ce-surface": "#1a1f2e",
+            "ce-border": "#2d3748",
+            "ce-green": "#10b981",
+            "ce-blue": "#3b82f6",
+            "ce-purple": "#8b5cf6",
+            "ce-pink": "#ec4899",
+            "ce-yellow": "#f59e0b",
+            "ce-red": "#ef4444",
+            "ce-700": "#374151",
+            "ce-600": "#4b5563",
+            "ce-500": "#6b7280",
+            "ce-400": "#9ca3af",
+            "ce-300": "#d1d5db",
+            "ce-200": "#e5e7eb",
+            "ce-100": "#f3f4f6",
           },
           fontFamily: {
-            display: ['"DM Sans"', "sans-serif"],
+            sans: ['"Inter"', "sans-serif"],
             mono: ['"JetBrains Mono"', "monospace"],
           },
         },
@@ -38,7 +41,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
     rel="stylesheet" />
 
   <!-- ══════════════════ chessground CDNs ══════════════════ -->
@@ -50,53 +53,56 @@
   <link rel="stylesheet" href="../style/analyse.css" />
 </head>
 
-<body class="bg-ce-900 text-ce-100 h-screen flex overflow-hidden select-none">
+<body class="bg-ce-bg text-ce-100 h-screen flex overflow-hidden select-none font-sans">
   <!-- ══════════════════ SIDEBAR ══════════════════ -->
-  <aside class="w-52 flex-shrink-0 bg-ce-800 border-r border-ce-700 flex flex-col">
-    <div class="px-4 py-5 border-b border-ce-700">
-      <div class="flex items-center gap-2.5">
+  <aside class="w-56 flex-shrink-0 bg-ce-surface border-r border-ce-border flex flex-col">
+    <div class="px-4 py-6 border-b border-ce-border">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-ce-green to-ce-blue flex items-center justify-center text-lg font-bold text-white">
+          ♞
+        </div>
         <div>
-          <div class="font-semibold text-ce-100 italic tracking-wide leading-none">
+          <div class="font-bold text-ce-100 tracking-tight leading-none">
             ChessEater
           </div>
-          <div class="text-ce-400 text-xs mt-0.5">Analyseur de parties</div>
+          <div class="text-ce-500 text-xs mt-1">Analyse</div>
         </div>
       </div>
     </div>
 
-    <nav class="flex-1 py-3 px-2 flex flex-col gap-0.5">
+    <nav class="flex-1 py-4 px-3 flex flex-col gap-1">
       <a href="../index.html"
-        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400">
-        <i data-lucide="home" class="nav-icon w-4 h-4"></i>Accueil
+        class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-400 hover:text-ce-300 hover:bg-ce-border/50 transition-colors">
+        <i data-lucide="home" class="nav-icon w-5 h-5"></i><span>Accueil</span>
       </a>
       <a href="#"
-        class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-200">
-        <i data-lucide="bar-chart-2" class="nav-icon w-4 h-4 text-ce-400"></i>Analyse
+        class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-green bg-ce-green/10">
+        <i data-lucide="bar-chart-2" class="nav-icon w-5 h-5"></i><span>Analyse</span>
       </a>
-      <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
-        <i data-lucide="swords" class="nav-icon w-4 h-4"></i>Rejouer vs IA
+      <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
+        <i data-lucide="swords" class="nav-icon w-5 h-5"></i><span>Rejouer vs IA</span>
       </a>
-      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
-        <i data-lucide="trending-up" class="nav-icon w-4 h-4"></i>Progression
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
+        <i data-lucide="trending-up" class="nav-icon w-5 h-5"></i><span>Progression</span>
       </a-->
       <a href="#"
-        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed">
-        <i data-lucide="settings" class="nav-icon w-4 h-4"></i>Paramètres
+        class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-400 opacity-50 cursor-not-allowed hover:bg-ce-border/50 transition-colors">
+        <i data-lucide="settings" class="nav-icon w-5 h-5"></i><span>Paramètres</span>
       </a>
     </nav>
-    <div class="p-3 border-t border-ce-700">
+    <div class="p-4 border-t border-ce-border">
       <!-- Info partie -->
-      <div class="bg-ce-750 rounded-md p-3 border border-ce-700">
-        <div class="text-ce-300 text-xs font-semibold mb-1">
-          Partie en cours d'analyse
+      <div class="bg-ce-bg rounded-lg p-4 border border-ce-border">
+        <div class="text-ce-500 text-xs font-semibold uppercase tracking-wider mb-2">
+          Partie analysée
         </div>
-        <div id="gameOpponent" class="text-ce-100 text-sm font-medium">vs. joueur 1</div>
-        <div id="gameInfo" class="text-ce-400 text-xs mt-0.5">
-          Blitz 5+0 · 34 coups · Défaite
+        <div id="gameOpponent" class="text-ce-100 text-sm font-bold">vs. joueur 1</div>
+        <div id="gameInfo" class="text-ce-400 text-xs mt-2 flex gap-2">
+          <span>Blitz 5+0</span> · <span>34 coups</span>
         </div>
-        <a href="index.html" class="mt-2 flex items-center gap-1.5 text-ce-green text-xs font-medium hover:underline">
+        <a href="../index.html" class="mt-3 flex items-center gap-1.5 text-ce-green text-xs font-semibold hover:underline transition-colors">
           <i data-lucide="arrow-left" class="w-3 h-3"></i>
-          Changer de partie
+          <span>Retour</span>
         </a>
       </div>
     </div>
@@ -105,11 +111,11 @@
   <!-- ══════════════════ MAIN ══════════════════ -->
   <main class="flex-1 flex overflow-hidden">
     <!-- ── ZONE ÉCHIQUIER (gauche) ── -->
-    <div class="flex flex-col flex-1 min-w-0 overflow-hidden border-r border-ce-700">
+    <div class="flex flex-col flex-1 min-w-0 overflow-hidden border-r border-ce-border">
       <!-- Header analyse -->
-      <div class="bg-ce-800 border-b border-ce-700 px-5 py-3 flex items-center gap-3">
+      <div class="bg-ce-surface border-b border-ce-border px-6 py-4 flex items-center gap-3">
         <div class="flex items-center gap-2">
-          <div class="w-2 h-2 rounded-full bg-ce-green"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-ce-green"></div>
           <span class="text-sm font-semibold text-ce-100">Mode Analyse</span>
         </div>
         <div class="ml-auto flex items-center gap-2">
@@ -218,9 +224,9 @@
     </div>
 
     <!-- ══════════════════ PANNEAU DROITE ══════════════════ -->
-    <div class="w-80 flex-shrink-0 flex flex-col bg-ce-800 overflow-hidden">
+    <div class="w-80 flex-shrink-0 flex flex-col bg-ce-surface overflow-hidden border-l border-ce-border">
       <!-- Tabs -->
-      <div class="flex border-b border-ce-700 px-4">
+      <div class="flex border-b border-ce-border px-4">
         <button class="tab-btn border-b-2 py-3 px-3 text-sm font-medium" id="tabBtn-moves">
           Coups
         </button>

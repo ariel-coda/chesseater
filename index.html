@@ -11,30 +11,34 @@
         theme: {
           extend: {
             colors: {
-              // Chess.com-inspired green palette
-              "ce-green": "#81b64c",
-              "ce-green-dark": "#6a9a3a",
-              "ce-green-dim": "#4a6e28",
-              "ce-green-muted": "#2d4a18",
-              // Grays
-              "ce-900": "#1a1a1a",
-              "ce-800": "#242424",
-              "ce-750": "#2a2a2a",
-              "ce-700": "#302f2f",
-              "ce-600": "#3d3c3c",
-              "ce-500": "#555555",
-              "ce-400": "#7a7a7a",
-              "ce-300": "#a0a0a0",
-              "ce-200": "#c8c8c8",
-              "ce-100": "#e8e8e8",
+              // Duolingo-inspired colorful palette
+              "ce-brand": "#1f2937",
+              "ce-bg": "#0f1419",
+              "ce-surface": "#1a1f2e",
+              "ce-border": "#2d3748",
+              // Accent colors (Duolingo style)
+              "ce-green": "#10b981",
+              "ce-blue": "#3b82f6",
+              "ce-purple": "#8b5cf6",
+              "ce-pink": "#ec4899",
+              "ce-yellow": "#f59e0b",
+              "ce-red": "#ef4444",
+              // Neutrals
+              "ce-700": "#374151",
+              "ce-600": "#4b5563",
+              "ce-500": "#6b7280",
+              "ce-400": "#9ca3af",
+              "ce-300": "#d1d5db",
+              "ce-200": "#e5e7eb",
+              "ce-100": "#f3f4f6",
             },
             fontFamily: {
-              display: ['"DM Sans"', "sans-serif"],
+              sans: ['"Inter"', "sans-serif"],
               mono: ['"JetBrains Mono"', "monospace"],
             },
             boxShadow: {
-              "inner-sm": "inset 0 1px 3px rgba(0,0,0,0.5)",
-              "green-glow": "0 0 0 2px rgba(129,182,76,0.35)",
+              "sm-soft": "0 2px 8px rgba(0,0,0,0.08)",
+              "md-soft": "0 4px 12px rgba(0,0,0,0.1)",
             },
           },
         },
@@ -44,7 +48,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <!-- Lucide Icons -->
@@ -52,42 +56,43 @@
     <link rel="stylesheet" href="style/style.css" />
   </head>
 
-  <body class="bg-ce-900 text-ce-100 h-screen flex overflow-hidden select-none">
+  <body class="bg-ce-bg text-ce-100 h-screen flex overflow-hidden select-none font-sans">
     <!-- ══════════════════════════════════════════
        SIDEBAR
   ══════════════════════════════════════════ -->
     <aside
-      class="w-52 flex-shrink-0 bg-ce-800 border-r border-ce-700 flex flex-col"
+      class="w-56 flex-shrink-0 bg-ce-surface flex flex-col border-r border-ce-border"
     >
       <!-- Logo -->
-      <div class="px-4 py-5 border-b border-ce-700">
-        <div class="flex items-center gap-2.5">
+      <div class="px-4 py-6 border-b border-ce-border">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-ce-green to-ce-blue flex items-center justify-center text-lg font-bold text-white">
+            ♞
+          </div>
           <div>
-            <div
-              class="font-semibold text-ce-100 italic tracking-wide leading-none"
-            >
+            <div class="font-bold text-ce-100 tracking-tight leading-none">
               ChessEater
             </div>
-            <div class="text-ce-400 text-xs mt-0.5">Analyseur de parties</div>
+            <div class="text-ce-500 text-xs mt-1">Analyseur d'échecs</div>
           </div>
         </div>
       </div>
 
       <!-- Nav -->
-      <nav class="flex-1 py-3 px-2 flex flex-col gap-0.5">
+      <nav class="flex-1 py-4 px-3 flex flex-col gap-1">
         <a
           href="./index.html"
-          class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-200"
+          class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-100 bg-ce-green/10 text-ce-green"
         >
-          <i data-lucide="home" class="nav-icon w-4 h-4 text-ce-400"></i>
-          Accueil
+          <i data-lucide="home" class="nav-icon w-5 h-5"></i>
+          <span>Accueil</span>
         </a>
         <a
           href="./pages/analyse.html"
-          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 opacity-50"
+          class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-400 hover:text-ce-300 hover:bg-ce-border/50 opacity-50 transition-colors"
         >
-          <i data-lucide="bar-chart-2" class="nav-icon w-4 h-4"></i>
-          Analyse
+          <i data-lucide="bar-chart-2" class="nav-icon w-5 h-5"></i>
+          <span>Analyse</span>
         </a>
         <!--a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50">
         <i data-lucide="swords" class="nav-icon w-4 h-4"></i>
@@ -107,20 +112,20 @@
       </a-->
         <a
           href="#"
-          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-ce-400 hover:text-ce-200 cursor-not-allowed opacity-50"
+          class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-ce-400 hover:text-ce-300 cursor-not-allowed opacity-50 hover:bg-ce-border/50 transition-colors"
         >
-          <i data-lucide="settings" class="nav-icon w-4 h-4"></i>
-          Paramètres
+          <i data-lucide="settings" class="nav-icon w-5 h-5"></i>
+          <span>Paramètres</span>
         </a>
       </nav>
 
-      <!-- Connect button -->
-      <div class="p-3 border-t border-ce-700">
+      <!-- Action button -->
+      <div class="p-4 border-t border-ce-border">
         <button
-          class="w-full import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm py-2.5 rounded-md flex items-center justify-center gap-2 transition-colors"
+          class="import-btn w-full bg-gradient-to-r from-ce-green to-ce-blue hover:shadow-md-soft text-white font-semibold text-sm py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-200"
         >
-          <i data-lucide="log-in" class="w-4 h-4"></i>
-          Se connecter
+          <i data-lucide="zap" class="w-4 h-4"></i>
+          <span>Analyser</span>
         </button>
       </div>
     </aside>
@@ -131,41 +136,31 @@
     <main class="flex-1 flex flex-col overflow-hidden">
       <!-- Top bar -->
       <header
-        class="bg-ce-800 border-b border-ce-700 px-6 py-4 flex items-center gap-4"
+        class="bg-ce-surface border-b border-ce-border px-6 py-5 flex items-center gap-4"
       >
         <!-- Username input -->
-        <div class="relative flex-1 max-w-md">
-          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ce-400">
+        <div class="relative flex-1 max-w-sm">
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ce-500">
             <i data-lucide="at-sign" class="w-4 h-4"></i>
           </div>
           <input
             id="usernameInput"
             type="text"
-            placeholder="Entrez votre nom d'utilisateur"
-            class="username-input w-full bg-ce-750 border border-ce-600 text-ce-100 placeholder-ce-500 text-sm pl-10 pr-4 py-2.5 rounded-md font-display transition-all"
+            placeholder="Pseudo Chess.com ou Lichess"
+            class="username-input w-full bg-ce-bg border border-ce-border text-ce-100 placeholder-ce-500 text-sm pl-10 pr-4 py-2.5 rounded-lg font-sans transition-all focus:ring-2 focus:ring-ce-green/50 focus:border-ce-green"
           />
         </div>
 
         <!-- Source tabs -->
         <div class="flex items-center gap-2">
-          <!-- PGN -->
-          <button
-            onclick="setSource('pgn')"
-            id="tab-pgn"
-            class="source-tab flex items-center gap-2 px-4 py-2.5 rounded-md border border-ce-600 text-ce-400 text-sm font-medium bg-ce-750"
-          >
-            <i data-lucide="file-text" class="w-4 h-4"></i>
-            PGN
-          </button>
-
           <!-- Chess.com -->
           <button
             onclick="setSource('chesscom')"
             id="tab-chesscom"
-            class="source-tab active flex items-center gap-2 px-4 py-2.5 rounded-md border-ce-600 border text-sm font-medium"
+            class="source-tab active flex items-center gap-2 px-4 py-2.5 rounded-lg border border-ce-border text-sm font-medium bg-ce-blue/10 text-ce-blue transition-all"
           >
             <!-- Chess.com SVG logo -->
-            <img src="./assets/logo/chess.com.png" alt="" class="w-5" />
+            <img src="./assets/logo/chess.com.png" alt="" class="w-4" />
             Chess.com
           </button>
 
@@ -173,11 +168,21 @@
           <button
             onclick="setSource('lichess')"
             id="tab-lichess"
-            class="source-tab flex items-center gap-2 px-4 py-2.5 rounded-md border border-ce-600 text-ce-400 text-sm font-medium bg-ce-750"
+            class="source-tab flex items-center gap-2 px-4 py-2.5 rounded-lg border border-ce-border text-ce-400 text-sm font-medium bg-ce-bg hover:bg-ce-border/30 transition-all"
           >
             <!-- Lichess horse SVG logo -->
-            <img src="./assets/logo/lichess.png" alt="" class="w-5" />
+            <img src="./assets/logo/lichess.png" alt="" class="w-4" />
             Lichess
+          </button>
+
+          <!-- PGN -->
+          <button
+            onclick="setSource('pgn')"
+            id="tab-pgn"
+            class="source-tab flex items-center gap-2 px-4 py-2.5 rounded-lg border border-ce-border text-ce-400 text-sm font-medium bg-ce-bg hover:bg-ce-border/30 transition-all"
+          >
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            PGN
           </button>
         </div>
 
@@ -185,41 +190,43 @@
         <button
           id="importBtn"
           onclick="startImport()"
-          class="import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm px-5 py-2.5 rounded-md flex items-center gap-2 transition-colors flex-shrink-0"
+          class="import-btn bg-gradient-to-r from-ce-purple to-ce-pink hover:shadow-md-soft text-white font-semibold text-sm px-5 py-2.5 rounded-lg flex items-center gap-2 transition-all flex-shrink-0"
         >
           <i data-lucide="download" class="w-4 h-4"></i>
-          Importer
+          <span>Charger</span>
         </button>
       </header>
 
       <!-- Content area -->
-      <div class="flex-1 overflow-hidden flex flex-col px-6 py-5 gap-4">
+      <div class="flex-1 overflow-hidden flex flex-col px-6 py-6 gap-5">
         <!-- Section title -->
         <div class="flex items-center justify-between">
-          <h1 class="text-ce-100 font-semibold text-lg tracking-tight">
+          <h1 class="text-ce-100 font-bold text-2xl tracking-tight">
             Mes parties
           </h1>
-          <div id="gameCount" class="text-ce-400 text-sm hidden">
+          <div id="gameCount" class="text-ce-500 text-sm hidden">
             <span id="countNumber">0</span> parties chargées
           </div>
         </div>
 
         <!-- Games panel -->
         <div
-          class="flex-1 bg-ce-800 rounded-lg border border-ce-700 overflow-hidden flex flex-col"
+          class="flex-1 bg-ce-surface rounded-xl border border-ce-border overflow-hidden flex flex-col shadow-sm-soft"
         >
           <!-- Empty / loading state -->
           <div
             id="emptyState"
-            class="flex-1 flex flex-col items-center justify-center gap-4 text-ce-500"
+            class="flex-1 flex flex-col items-center justify-center gap-4 text-ce-500 py-12"
           >
-            <i data-lucide="chess" class="w-10 h-10 opacity-30"></i>
+            <div class="w-16 h-16 rounded-2xl bg-ce-blue/10 flex items-center justify-center">
+              <i data-lucide="chess" class="w-8 h-8 text-ce-blue"></i>
+            </div>
             <div class="text-center">
-              <p class="text-sm font-medium text-ce-400">
+              <p class="text-sm font-semibold text-ce-300">
                 Aucune partie chargée
               </p>
-              <p class="text-xs text-ce-500 mt-1">
-                Entrez votre pseudo et importez vos parties
+              <p class="text-xs text-ce-500 mt-2">
+                Entrez votre pseudo et cliquez sur "Charger"
               </p>
             </div>
           </div>
@@ -227,19 +234,19 @@
           <!-- Loading state -->
           <div
             id="loadingState"
-            class="flex-1 flex-col items-center justify-center gap-4 hidden"
+            class="flex-1 flex flex-col items-center justify-center gap-4 hidden py-12"
           >
             <div
-              class="w-10 h-10 rounded-full border-2 border-ce-700 border-t-ce-green spinner"
+              class="w-12 h-12 rounded-full border-2 border-ce-border border-t-ce-green spinner"
             ></div>
-            <p class="text-ce-400 text-sm">Chargement des parties...</p>
+            <p class="text-ce-400 text-sm font-medium">Chargement des parties...</p>
           </div>
 
           <!-- Games list -->
           <div id="gamesList" class="flex-1 overflow-y-auto hidden">
             <!-- Header row -->
             <div
-              class="grid grid-cols-12 gap-3 px-4 py-2.5 border-b border-ce-700 text-ce-500 text-xs font-medium uppercase tracking-widest"
+              class="grid grid-cols-12 gap-3 px-6 py-3 border-b border-ce-border text-ce-600 text-xs font-semibold uppercase tracking-wider sticky top-0 bg-ce-surface/95 backdrop-blur-sm"
             >
               <div class="col-span-1">Résultat</div>
               <div class="col-span-3">Adversaire</div>
@@ -259,10 +266,10 @@
           <div id="analyzeBar" class="hidden">
             <button
               onclick="analyzeSelected()"
-              class="import-btn bg-ce-green hover:bg-ce-green-dark text-ce-900 font-semibold text-sm px-6 py-2.5 rounded-md flex items-center gap-2 transition-colors"
+              class="import-btn bg-gradient-to-r from-ce-yellow to-ce-red hover:shadow-md-soft text-white font-semibold text-sm px-6 py-3 rounded-lg flex items-center gap-2 transition-all"
             >
-              <img src="./assets/icones/electric.png" alt="" class="w-4 h-4" />
-              Analyser la partie sélectionnée
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span>Analyser</span>
             </button>
           </div>
         </div>
