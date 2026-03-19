@@ -10,7 +10,7 @@ Ton coach d'échecs personnel — analyse tes parties, suit ta progression et t'
 
 | Couche | Technologie |
 |---|---|
-| Frontend | Next.js 15 + TypeScript + Tailwind CSS |
+| Frontend | Next.js 16.1.7 + TypeScript + Tailwind CSS |
 | Backend | Python 3.11 + FastAPI |
 | Base de données | Supabase (PostgreSQL) |
 | Analyse échecs | Stockfish (local) + Lichess API |
@@ -22,7 +22,7 @@ Ton coach d'échecs personnel — analyse tes parties, suit ta progression et t'
 ## Fonctionnalités prévues
 
 - [x] Authentification (email + Google OAuth)
-- [ ] Connexion comptes Chess.com et Lichess
+- [x] Connexion comptes Chess.com et Lichess
 - [ ] Récupération automatique des parties
 - [ ] Analyse des parties par Stockfish
 - [ ] Coaching IA adapté au niveau Elo

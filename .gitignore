@@ -41,6 +41,8 @@ Thumbs.db        # Windows
 .idea/           # IntelliJ / WebStorm
 .vscode/         # VS Code (optionnel, certains préfèrent le commit)
 *.swp            # Vim
+.gitignore
+.git
 
 # ─── Stockfish (binaire local) ─────────────────────────
 backend/bin/

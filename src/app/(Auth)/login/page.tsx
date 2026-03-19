@@ -18,6 +18,7 @@ export default function LoginPage() {
     // useState = une variable qui, quand elle change, met à jour l'affichage
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)   // true pendant une requête
     const [error, setError] = useState<string | null>(null)  // message d'erreur
 
@@ -65,6 +66,10 @@ export default function LoginPage() {
         // Pas de router.push ici — Google redirige automatiquement
     }
 
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     // ── Rendu de la page ────────────────────────────────────
     return (
         <main className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
@@ -81,8 +86,8 @@ export default function LoginPage() {
                     <Image
                         src="/logo-greatmentor.png"
                         alt="GreatMentor logo"
-                        width={130}
-                        height={130}
+                        width={160}
+                        height={160}
                         className="mb-3"
                     />
                     <h1 className="text-white text-3xl font-bold tracking-wide">
@@ -127,13 +132,20 @@ export default function LoginPage() {
                                 Mot de passe
                             </label>
                             <input
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
                                 required
                                 className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-2.5 text-sm placeholder:text-zinc-500 focus:outline-none focus:border-orange-500 transition-colors"
                             />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                className="text-zinc-500 text-xs mt-1.5 underline cursor-pointer hover:text-orange-500 transition-colors"
+                            >
+                                {showPassword ? "Masquer le mot de passe" : "Voir le mot de passe"}
+                            </button>
                         </div>
 
                         <button
