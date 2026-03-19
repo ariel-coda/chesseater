@@ -11,7 +11,7 @@ Ton coach d'échecs personnel — analyse tes parties, suit ta progression et t'
 | Couche | Technologie |
 |---|---|
 | Frontend | Next.js 16.1.7 + TypeScript + Tailwind CSS |
-| Backend | Python 3.11 + FastAPI |
+| Backend | Python 3.12.10 + FastAPI |
 | Base de données | Supabase (PostgreSQL) |
 | Analyse échecs | Stockfish (local) + Lichess API |
 | Coach IA | Mistral API (gratuit) |
@@ -34,7 +34,7 @@ Ton coach d'échecs personnel — analyse tes parties, suit ta progression et t'
 ## Prérequis
 
 - Node.js 18+
-- Python 3.11+
+- Python 3.12.10+
 - Un compte [Supabase](https://supabase.com) (gratuit)
 - Un compte [Mistral](https://console.mistral.ai) (gratuit)
 - Stockfish installé localement
